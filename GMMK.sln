@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMMK", "GMMK\GMMK.csproj", "{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA548BA6-7B57-49A3-8DE3-E9498F6AACCB}
+	EndGlobalSection
+EndGlobal
