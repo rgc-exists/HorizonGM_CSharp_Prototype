@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GMMK")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6eea733868ff2e94faa41bdb9f34632f9fe50e48")]
 [assembly: System.Reflection.AssemblyProductAttribute("GMMK")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GMMK")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

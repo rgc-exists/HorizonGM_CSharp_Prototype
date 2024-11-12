@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "jnqavPnpKlyg+blqL1JTXnuViQGQUkBylz59jLO4Kx0k4E4gmriVbh5RmSVaomOhr1dB5mvex/3Q4Qt/1TIIPw==",
+  "dgSpecHash": "T7kfFZO3G43e+amUAQwRcnESOyKUwK0uEOKthw7RiQJEV9WcES78tsy+ka3aA7NxKT45E3ivD+SJGDE3kXhIPg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK\\GMMK\\GMMK.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rando\\.nuget\\packages\\magick.net-q8-anycpu\\13.10.0\\magick.net-q8-anycpu.13.10.0.nupkg.sha512",
+    "C:\\Users\\rando\\.nuget\\packages\\magick.net.core\\13.10.0\\magick.net.core.13.10.0.nupkg.sha512",
+    "C:\\Users\\rando\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\rando\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\rando\\.nuget\\packages\\propertychanged.fody\\4.1.0\\propertychanged.fody.4.1.0.nupkg.sha512",
+    "C:\\Users\\rando\\.nuget\\packages\\sharpziplib\\1.4.2\\sharpziplib.1.4.2.nupkg.sha512"
+  ],
   "logs": []
 }

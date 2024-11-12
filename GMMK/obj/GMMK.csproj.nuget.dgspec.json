@@ -1,17 +1,87 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK\\GMMK\\GMMK.csproj": {}
+    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK\\GMMK\\GMMK.csproj": {
+    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK\\GMMK\\GMMK.csproj",
+        "projectUniqueName": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj",
         "projectName": "GMMK",
-        "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK\\GMMK\\GMMK.csproj",
+        "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj",
         "packagesPath": "C:\\Users\\rando\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK\\GMMK\\obj\\",
+        "outputPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rando\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj": {
+                "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj",
+        "projectName": "UndertaleModLib",
+        "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj",
+        "packagesPath": "C:\\Users\\rando\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\rando\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -44,6 +114,30 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.8.1, )"
+            },
+            "Magick.NET-Q8-AnyCPU": {
+              "target": "Package",
+              "version": "[13.10.0, )"
+            },
+            "Microsoft.CSharp": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "PropertyChanged.Fody": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "SharpZipLib": {
+              "target": "Package",
+              "version": "[1.4.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -55,12 +149,46 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+              "version": "[8.0.3, 8.0.3]"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.win-x86",
+              "version": "[8.0.3, 8.0.3]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x64",
+              "version": "[8.0.3, 8.0.3]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.win-x86",
+              "version": "[8.0.3, 8.0.3]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+              "version": "[8.0.3, 8.0.3]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x86",
+              "version": "[8.0.3, 8.0.3]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
         }
       }
     }
