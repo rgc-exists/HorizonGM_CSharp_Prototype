@@ -7,6 +7,7 @@ class GameObjectData
     public List<CodeData> code { get; set; }
     public bool spriteIsCustom { get; set; }
     public string sprite { get; set; }
+    public bool addToStartRoom { get; set; }
 }
 
 class CodeData

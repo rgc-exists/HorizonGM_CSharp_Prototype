@@ -15,12 +15,14 @@ using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static UndertaleModLib.Compiler.Compiler.AssemblyWriter;
 using System.IO;
+using static UndertaleModLib.Models.UndertaleRoom;
+using System.Xml.Linq;
 
 namespace GMMK
 {
     public class GMMK_Patcher
     {
-        public Dictionary<string, string> files = new Dictionary<string, string>();
+        public static Dictionary<string, string> files = new Dictionary<string, string>();
 
         public static UndertaleData data;
 
@@ -32,8 +34,15 @@ namespace GMMK
         public static string baseDir;
         public static string patcherDir;
         public static string gmlCodeDir;
+
+        private static string curLoadingCodeDir;
+
         string[] modDirs;
         public static bool failedHook = false;
+
+        public static UndertaleData blankData;
+
+        private UndertaleCode firstRoomInit;
         public void Load(UndertaleData moddingData, string[] exeArgs)
         {
             patcherDir = Environment.CurrentDirectory;
@@ -44,7 +53,7 @@ namespace GMMK
             gmlCodeDir = Path.Combine(patcherDir, "gmlCode");
 
             data = moddingData;
-
+            blankData = UndertaleData.CreateNew();
 
 
 
@@ -52,14 +61,11 @@ namespace GMMK
             Console.WriteLine($"[GMMK]: Adding objects...");
             AddObjects();
 
-            Console.WriteLine($"[GMMK]: Loading code from files...");
-            files = LoadCodeFromFiles(gmlCodeDir);
-
 
 
 
             Console.WriteLine($"[GMMK]: Adding code...");
-            LoadCode();
+            LoadCode(gmlCodeDir);
 
             Console.WriteLine($"[GMMK]: Loading user mods...");
             bool successful = LoadMods();
@@ -93,7 +99,9 @@ namespace GMMK
                 modDirs = Directory.GetDirectories(modsPath);
 
 
+                Dictionary<string, List<string>> modJsonPaths = new Dictionary<string, List<string>>();
                 List<string> allJsonPaths = new List<string>();
+                List<string> allModNames = new List<string>();
 
                 string scr_loadAssetsAsLocals_string = "";
                 Dictionary<string, GameObjectData> gameObjects = new Dictionary<string, GameObjectData>();
@@ -105,16 +113,35 @@ namespace GMMK
                     List<string> jsonPaths = new List<string>();
                     List<string> spritePaths = new List<string>();
                     List<string> soundPaths = new List<string>();
-
+                    List<string> directoryJsonPaths = new List<string>();
+                    List<string> directoryJsonEarlyPaths = new List<string>();
 
                     foreach (string file in modFiles)
                     {
-                        Console.WriteLine(file);
+                        Console.WriteLine(Path.GetFileName(file));
                         if (file.EndsWith(".json"))
                         {
-                            jsonPaths.Add(file);
-                            allJsonPaths.Add(file);
+                            if (Path.GetFileName(file) == "directories.json")
+                            {
+                                directoryJsonPaths.Add(file);
+
+                            } else if (Path.GetFileName(file) == "directories_early.json")
+                            {
+                                directoryJsonEarlyPaths.Add(file);
+
+                            } else
+                            {
+                                jsonPaths.Add(file);
+                                allJsonPaths.Add(file);
+
+                            }
                         }
+                    }
+
+                    foreach (string file in directoryJsonEarlyPaths)
+                    {
+                        Console.WriteLine($"directories_early.json file found: {file}");
+                        LoadCode(Directory.GetParent(file).FullName, "directories_early.json");
                     }
 
                     for (int stage = 1; stage <= 5; stage++)
@@ -245,6 +272,11 @@ namespace GMMK
                                                 {
                                                     visible = true;
                                                 }
+                                                bool? persistent = objData.persistent;
+                                                if (persistent == null)
+                                                {
+                                                    persistent = false;
+                                                }
 
                                                 UndertaleGameObject newGameObject = new UndertaleGameObject
                                                 {
@@ -252,16 +284,42 @@ namespace GMMK
                                                     ParentId = parentId,
                                                     Solid = solid,
                                                     Sprite = sprite,
-                                                    Visible = (bool)visible
+                                                    Visible = (bool)visible,
+                                                    Persistent = (bool)persistent
                                                 };
                                                 data.GameObjects.Add(newGameObject);
+
+                                                var addToStartRoom = objData.add_to_start_room;
+
+                                                if (addToStartRoom != null)
+                                                {
+                                                    UndertaleRoom ogFirstRoom = data.GeneralInfo.RoomOrder[1].Resource;
+                                                    // This takes into account the fact that the mod loader inserts its own room to be the "first room" in the room order.
+
+                                                    data.GeneralInfo.LastObj++;
+                                                    UndertaleRoom.GameObject newObjInstance = new UndertaleRoom.GameObject()
+                                                    {
+                                                        InstanceID = data.GeneralInfo.LastObj,
+                                                        ObjectDefinition = newGameObject,
+                                                        X = addToStartRoom.x != null ? addToStartRoom.x : 0,
+                                                        Y = addToStartRoom.y != null ? addToStartRoom.y : 0,
+                                                        ScaleX = addToStartRoom.x_scale != null ? addToStartRoom.x_scale : 1,
+                                                        ScaleY = addToStartRoom.y_scale != null ? addToStartRoom.y_scale : 1,
+                                                        Rotation = addToStartRoom.rotation != null ? addToStartRoom.rotation : 0,
+                                                    };
+
+                                                    ogFirstRoom.Layers[0].InstancesData.Instances.Add(newObjInstance);
+
+                                                    ogFirstRoom.GameObjects.Add(newObjInstance);
+                                                }
 
                                                 GameObjectData newObjData = new GameObjectData
                                                 {
                                                     undertaleGameObject = newGameObject,
                                                     spriteIsCustom = spriteIsCustom,
                                                     sprite = spriteName != null ? spriteName : "",
-                                                    code = new List<CodeData>()
+                                                    code = new List<CodeData>(),
+                                                    addToStartRoom = addToStartRoom != null
                                                 };
 
                                                 gameObjects.Add(objName.ToString(), newObjData);
@@ -456,6 +514,7 @@ namespace GMMK
                                             }
                                         }
                                     }
+
                                 }
                             }
                             else
@@ -467,6 +526,14 @@ namespace GMMK
 
                     }
 
+                    allModNames.Add(Path.GetFileName(modFolderPath));
+                    modJsonPaths.Add(Path.GetFileName(modFolderPath), jsonPaths);
+
+                    foreach (string file in directoryJsonPaths)
+                    {
+                        Console.WriteLine($"directories.json file found: {file}");
+                        LoadCode(Directory.GetParent(file).FullName);
+                    }
 
                 }
 
@@ -483,7 +550,7 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
                         }
                     }
                 }
-                data.HookCode("gml_Object_obj_persistent_Create_0", spriteInitStr);
+                data.HookCode(firstRoomInit.Name.Content, spriteInitStr.Replace("\\", "\\\\"));
 
                 if (scr_loadAssetsAsLocals_string.Trim() == "")
                 {
@@ -498,17 +565,11 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
 
                     if (data.Code.ByName(createCodeName) != null)
                     {
-                        if (gameObject.Name.Content != "obj_persistent")
-                        {
-                            data.HookCode(createCodeName, "gml_Script_scr_GMMK_loadAssetsAsLocals()\n\n#orig#()");
-                        }
-                        else
-                        {
-                            data.HookCode(createCodeName, "#orig#()\ngml_Script_scr_GMMK_loadAssetsAsLocals()");
-                        }
+                        data.HookCode(createCodeName, "gml_Script_scr_GMMK_loadAssetsAsLocals()\n#orig#()");
                     }
                     else
                     {
+                        // TODO: Access the create functions directly rather than based on the name ending in "_Create_0", in case of custom names by other mods.
                         if (gameObject.ParentId != null && data.Code.ByName("gml_Object_" + gameObject.ParentId.Name.Content + "_Create_0") != null)
                         {
                             gameObject.EventHandlerFor(EventType.Create, data)
@@ -522,10 +583,11 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
                     }
                 }
 
-                /*
-                data.CreateFunction("gmmk_get_all_jsons", $"return {StringListToGMLString(allJsonPaths)}", 0);
-                data.CreateFunction("gmmk_get_all_mod_directories", $"return {StringListToGMLString(modDirs)}", 0);
-                */
+                data.CreateFunction("GMMK_initialize_info", @$"
+global.GMMK_all_json_paths = {StringListToGMLString(allJsonPaths).Replace("\\", "\\\\")}
+global.GMMK_mod_json_paths = {StringListDictionaryToGMLString(modJsonPaths).Replace("\\", "\\\\")}
+global.GMMK_all_mod_names = {StringListToGMLString(allModNames).Replace("\\", "\\\\")}
+global.GMMK_all_mod_paths = {StringListToGMLString(modDirs)}".Replace("\\", "\\\\"), 0);
 
                 if (!failedHook)
                 {
@@ -539,13 +601,28 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
             return false;
         }
 
+        private static string StringListDictionaryToGMLString(Dictionary<string, List<string>> dict)
+        {
+            string returnStr = $"gml_Script_GMMK_modhelper_array_to_struct([";
+            for(int k = 0; k < dict.Count; k++)
+            {
+                string key = dict.Keys.ToArray()[k];
+                List<string> arrayStr = dict[key];
+                returnStr += $"\"{key}\", {StringListToGMLString(arrayStr)}";
+                if (k < dict.Count - 1) returnStr += ", ";
+            }
+            returnStr += "])";
+
+            return returnStr;
+        }
+
         private static string StringListToGMLString(List<string> strs)
         {
             string returnStr = "[";
             for (int p = 0; p < strs.Count; p++)
             {
-                string jsonP = strs[p];
-                returnStr += $"\"{jsonP}\"";
+                string str = strs[p];
+                returnStr += $"\"{str}\"";
                 if (p < strs.Count - 1) returnStr += ", ";
             }
             returnStr += "]";
@@ -585,10 +662,14 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
             }
             return null;
         }
-        private static void LoadCode()
+        private static void LoadCode(string codePath, string jsonFileName = "directories.json")
         {
 
-            var directoryJsonPath = Path.Combine(gmlCodeDir, "directories.json");
+            Console.WriteLine($"[GMMK]: Loading code from files: {codePath}");
+            files = LoadCodeFromFiles(codePath);
+
+            curLoadingCodeDir = codePath;
+            var directoryJsonPath = Path.Combine(codePath, jsonFileName);
             var directories = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(directoryJsonPath));
             if (directories == null) return;
 
@@ -597,26 +678,15 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
 
             foreach (var directory in directories)
             {
-                var path = Path.Combine(gmlCodeDir, directory.Key);
+                var path = Path.Combine(codePath, directory.Key);
                 if (!Directory.Exists(path))
                 {
                     Console.WriteLine($"Cant find {path} skipping...");
                 }
                 else
                 {
-                    /*
-                    if (directory.Value == "custom_tools")
-                    {
-                        foreach (string file in GetFilesRecursively(path))
-                        {
-                            var code = File.ReadAllText(file);
-                            code = ReplaceMacros(code);
+                    Console.WriteLine($"Loading code: {path}...");
 
-                            handlers["functions"].Invoke(code, file);
-                        }
-                    }
-                    //Might add this at some point, but for now it's unsupported.
-                    */
                     if (!handlers.ContainsKey(directory.Value))
                     {
                         Console.WriteLine($"Path {path} has handler {directory.Value} which isn't in handlers");
@@ -625,9 +695,10 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
                     {
                         foreach (var file in Directory.GetFiles(path))
                         {
+                            Console.WriteLine($"Loading file: {file}...");
                             var code = File.ReadAllText(file);
                             code = ReplaceMacros(code);
-
+                            
                             handlers[directory.Value].Invoke(code, file);
                         }
                     }
@@ -723,7 +794,7 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
                         if (!found) continue;
 
                         foundAtAll = true;
-                        string fileContents = File.ReadAllText(Path.Combine(gmlCodeDir, hookData.File));
+                        string fileContents = File.ReadAllText(Path.Combine(curLoadingCodeDir, hookData.File));
                         string scriptName = Path.GetFileNameWithoutExtension(hookData.File);
                         string functionArgs = "";
                         for (int a = 0; a < hookData.InArgs.Length; a++)
@@ -811,7 +882,7 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
                     string replace = hookData.ToReplace;
                     if (hookData.IsExternalFile)
                     {
-                        replace = File.ReadAllText(Path.Combine(gmlCodeDir, hookData.File));
+                        replace = File.ReadAllText(Path.Combine(curLoadingCodeDir, hookData.File));
                     }
 
                     if (assembly_str.Contains(find))
@@ -830,7 +901,35 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
                     }
                 }
             });
+            handlers.Add("assemblies", (code, file) =>
+            {
+                UndertaleCode undertaleCode = data.Code.ByName(Path.GetFileNameWithoutExtension(file));
+                string assemblyStr_out = ReplaceAssetsWithIndexes_ASM(code);
+                if (undertaleCode == null)
+                {
+                    undertaleCode = data.CreateCode(data.Strings.MakeString(Path.GetFileNameWithoutExtension(file)), out var locals);
 
+                    List<string> assemblyStr_lines = assemblyStr_out.Split("\n").ToList();
+                    while (assemblyStr_lines.Count > 0 && assemblyStr_lines[0].Replace(" ", "").StartsWith(";gml_Script_"))
+                    {
+                        string line = assemblyStr_lines[0].Replace(" ", "");
+                        string scriptName = line.TrimStart(';').Split(",")[0];
+                        if (line.Contains(","))
+                        {
+                            string argCount_Str = line.Split(",")[1];
+                            if (ushort.TryParse(argCount_Str, out ushort argCount))
+                            {
+                                UndertaleScript newScript = undertaleCode.CreateFunctionDefinition(data, true, scriptName.Replace("gml_Script_", ""), argCount, 0);
+                                //GMHooker.CreateExtensions.CreateInlineFunction(undertaleCode, data, locals, scriptName.Replace("gml_Script_", ""), code, argCount);
+                            }
+                        }
+                        assemblyStr_lines.RemoveAt(0);
+                    }
+                    assemblyStr_out = string.Join('\n', assemblyStr_lines.ToArray());
+                }
+                Console.WriteLine(assemblyStr_out);
+                undertaleCode.Replace(Assembler.Assemble(assemblyStr_out, data));
+            });
             handlers.Add("inlinereplacements", (code, file) =>
             {
                 if (file.EndsWith(".gml")) return;
@@ -968,14 +1067,39 @@ object_set_sprite({objData.undertaleGameObject.Name.Content}, global.GMMK_sprite
 
         public void AddCodeAfterMods()
         {
-
+            data.HookCode(firstRoomInit.Name.Content, "gml_Script_GMMK_initialize_info()\n" + File.ReadAllText(Path.Combine(gmlCodeDir, "hacky", "GMMK_firstRoom_init.gml")));
         }
 
         public void AddObjects()
         {
+            /*
+            UndertaleString name = new UndertaleString("obj_GMMK_manager");
+            data.Strings.Add(name);
+            UndertaleGameObject obj_GMMK_manager = new UndertaleGameObject()
+            {
+                Name = name,
+                Visible = true,
+                Solid = false
+            };
+            data.GameObjects.Add(obj_GMMK_manager);
+            */
+
+            UndertaleRoom ogFirstRoom = data.GeneralInfo.RoomOrder[0].Resource;
+            UndertaleRoom firstRoom = new UndertaleRoom() { Name = data.Strings.MakeString("gmmk_startupRoom"), Caption = data.Strings.MakeString("") };
+
+            firstRoom.Flags = firstRoom.Flags | RoomEntryFlags.IsGMS2;
+            UndertaleResourceById<UndertaleRoom, UndertaleChunkROOM> roomResource = new UndertaleResourceById<UndertaleRoom, UndertaleChunkROOM>(firstRoom);
+            data.Rooms.Add(firstRoom);
+            data.GeneralInfo.RoomOrder.Insert(0, roomResource);
+
+            firstRoomInit = data.CreateCode(data.Strings.MakeString("GMMK_firstRoom_init"), out var locals);
+            firstRoomInit.ReplaceGML($"room_goto({ogFirstRoom.Name.Content})", data);
+            firstRoom.CreationCodeId = firstRoomInit;
+
+            // TODO: Make it so "On Game Startup" functions in objects in the OG first room still get called.
+
+            //AddObjectToRoom(firstRoom.Name.Content, obj_GMMK_manager, firstRoom.Layers[0].LayerName.Content);
         }
-
-
 
         public UndertaleGameObject NewObject(string objectName, UndertaleSprite sprite = null, bool visible = true, bool solid = false, bool persistent = false, UndertaleGameObject parentObject = null)
         {

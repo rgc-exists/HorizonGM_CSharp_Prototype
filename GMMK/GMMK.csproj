@@ -16,16 +16,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="gmlCode\" />
+	  <Folder Include="assets\" />
 	</ItemGroup>
 
+
 	<Target Name="PrepareDirectories" AfterTargets="AfterBuild">
-		<MakeDir
-            Directories="$(TargetDir)patcher"/>
+		<MakeDir Directories="$(TargetDir)patcher" />
 	</Target>
 
 	<Target Name="CreateSymbolicLink" AfterTargets="AfterBuild">
-		<Exec Command="mklink /J &quot;$(TargetDir)gmlCode&quot; &quot;$(ProjectDir)gmlCode&quot;"
-		  Condition="!Exists('$(TargetDir)gmlCode')" />
+		<Exec Command="mklink /J &quot;$(TargetDir)gmlCode&quot; &quot;$(ProjectDir)gmlCode&quot;" Condition="!Exists('$(TargetDir)gmlCode')" />
 	</Target>
 </Project>
