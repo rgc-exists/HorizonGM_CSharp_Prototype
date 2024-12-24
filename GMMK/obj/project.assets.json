@@ -333,8 +333,8 @@
     },
     "UndertaleModLib/1.0.0": {
       "type": "project",
-      "path": "../UndertaleModTool/UndertaleModLib/UndertaleModLib.csproj",
-      "msbuildProject": "../UndertaleModTool/UndertaleModLib/UndertaleModLib.csproj"
+      "path": "../UndertaleModToolCE/UndertaleModLib/UndertaleModLib.csproj",
+      "msbuildProject": "../UndertaleModToolCE/UndertaleModLib/UndertaleModLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -370,8 +370,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj": {
-              "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj"
+            "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj": {
+              "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj"
             }
           }
         }

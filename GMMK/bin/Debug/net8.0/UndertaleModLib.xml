@@ -434,6 +434,11 @@
             All tile ids of this tileset. Game Maker Studio 2 only.
             </summary>
         </member>
+        <member name="P:UndertaleModLib.Models.UndertaleBackground.PaletteColumns">
+            <summary>
+            Used in the tile editor only, not serialized.
+            </summary>
+        </member>
         <member name="M:UndertaleModLib.Models.UndertaleBackground.Serialize(UndertaleModLib.UndertaleWriter)">
             <inheritdoc />
         </member>
@@ -5382,6 +5387,16 @@
         <member name="M:UndertaleModLib.Models.UndertaleSprite.TextureEntry.Dispose">
             <inheritdoc/>
         </member>
+        <member name="P:UndertaleModLib.Models.UndertaleSprite.MaskEntry.Width">
+            <summary>
+            Width of this sprite mask. UTMT only.
+            </summary>
+        </member>
+        <member name="P:UndertaleModLib.Models.UndertaleSprite.MaskEntry.Height">
+            <summary>
+            Height of this sprite mask. UTMT only.
+            </summary>
+        </member>
         <member name="M:UndertaleModLib.Models.UndertaleSprite.MaskEntry.Dispose">
             <inheritdoc/>
         </member>
@@ -7365,12 +7380,12 @@
             Returns a new <see cref="T:ImageMagick.MagickImage"/> with the contents of this image.
             </summary>
         </member>
-        <member name="M:UndertaleModLib.Util.GMImage.FromMagickImage(ImageMagick.MagickImage)">
+        <member name="M:UndertaleModLib.Util.GMImage.FromMagickImage(ImageMagick.IMagickImage{System.Byte})">
             <summary>
-            Creates a new raw format <see cref="T:UndertaleModLib.Util.GMImage"/> with the contents of the provided <see cref="T:ImageMagick.MagickImage"/>.
+            Creates a new raw format <see cref="T:UndertaleModLib.Util.GMImage"/> with the contents of the provided <see cref="T:ImageMagick.IMagickImage"/>.
             </summary>
             <remarks>
-            This modifies the image format of the provided <see cref="T:ImageMagick.MagickImage"/> to avoid unnecessary copies.
+            This modifies the image format of the provided <see cref="T:ImageMagick.IMagickImage"/> to avoid unnecessary copies.
             </remarks>
         </member>
         <member name="T:UndertaleModLib.Util.QoiConverter">
@@ -7557,13 +7572,14 @@
             <param name="filePath">File path to read the image from.</param>
             <returns>An image, in uncompressed BGRA format, containing the contents of the image file at the given path.</returns>
         </member>
-        <member name="M:UndertaleModLib.Util.TextureWorker.ResizeImage(ImageMagick.IMagickImage{System.Byte},System.Int32,System.Int32)">
+        <member name="M:UndertaleModLib.Util.TextureWorker.ResizeImage(ImageMagick.IMagickImage{System.Byte},System.Int32,System.Int32,ImageMagick.PixelInterpolateMethod)">
             <summary>
-            Performs a resize of the given image, if required, using bilinear interpolation. Always returns a new image.
+            Performs a resize of the given image, if required, using the specified interpolation (bilinear by default). Always returns a new image.
             </summary>
             <param name="image">Image to be resized (without being modified).</param>
             <param name="width">Desired width to resize to.</param>
             <param name="height">Desired height to resize to.</param>
+            <param name="interpolateMethod">Pixel interpolation method to use, or specify none to use bilinear interpolation.</param>
             <returns>A copy of the provided image, which is resized to the given dimensions when required.</returns>
         </member>
         <member name="M:UndertaleModLib.Util.TextureWorker.ReadMaskData(System.String,System.Int32,System.Int32)">

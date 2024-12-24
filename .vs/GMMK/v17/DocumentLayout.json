@@ -5,6 +5,22 @@
     {
       "AbsoluteMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|c:\\users\\rando\\gmmk_csharptemp\\gmmk_csharptemp\\gmmk\\src\\patcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|solutionrelative:gmmk\\src\\patcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|c:\\users\\rando\\gmmk_csharptemp\\gmmk_csharptemp\\gmmk\\gmlcode\\functions\\gmmk_modhelper_create_struct.gml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|solutionrelative:gmmk\\gmlcode\\functions\\gmmk_modhelper_create_struct.gml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|c:\\users\\rando\\gmmk_csharptemp\\gmmk_csharptemp\\gmmk\\gmmk.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|solutionrelative:gmmk\\gmmk.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|c:\\users\\rando\\gmmk_csharptemp\\gmmk_csharptemp\\gmmk\\gmlcode\\hacky\\gmmk_firstroom_init.gml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|solutionrelative:gmmk\\gmlcode\\hacky\\gmmk_firstroom_init.gml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|c:\\users\\rando\\gmmk_csharptemp\\gmmk_csharptemp\\gmmk\\gmlcode\\functions\\gmmk_modhelper_struct_to_array.gml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B40DCD49-344C-4B3C-A28B-BF9E0601EC4F}|GMMK\\GMMK.csproj|solutionrelative:gmmk\\gmlcode\\functions\\gmmk_modhelper_struct_to_array.gml||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +30,56 @@
       "DocumentGroups": [
         {
           "DockedWidth": 107,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GMMK_modhelper_struct_to_array.gml",
+              "DocumentMoniker": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\gmlCode\\functions\\GMMK_modhelper_struct_to_array.gml",
+              "RelativeDocumentMoniker": "GMMK\\gmlCode\\functions\\GMMK_modhelper_struct_to_array.gml",
+              "ToolTip": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\gmlCode\\functions\\GMMK_modhelper_struct_to_array.gml",
+              "RelativeToolTip": "GMMK\\gmlCode\\functions\\GMMK_modhelper_struct_to_array.gml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-22T23:06:33.841Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GMMK_firstRoom_init.gml",
+              "DocumentMoniker": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\gmlCode\\hacky\\GMMK_firstRoom_init.gml",
+              "RelativeDocumentMoniker": "GMMK\\gmlCode\\hacky\\GMMK_firstRoom_init.gml",
+              "ToolTip": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\gmlCode\\hacky\\GMMK_firstRoom_init.gml",
+              "RelativeToolTip": "GMMK\\gmlCode\\hacky\\GMMK_firstRoom_init.gml",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-22T23:06:28.492Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GMMK.csproj",
+              "DocumentMoniker": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj",
+              "RelativeDocumentMoniker": "GMMK\\GMMK.csproj",
+              "ToolTip": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\GMMK.csproj",
+              "RelativeToolTip": "GMMK\\GMMK.csproj",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABcAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-22T20:32:49.714Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GMMK_modhelper_create_struct.gml",
+              "DocumentMoniker": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\gmlCode\\functions\\GMMK_modhelper_create_struct.gml",
+              "RelativeDocumentMoniker": "GMMK\\gmlCode\\functions\\GMMK_modhelper_create_struct.gml",
+              "ToolTip": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\gmlCode\\functions\\GMMK_modhelper_create_struct.gml",
+              "RelativeToolTip": "GMMK\\gmlCode\\functions\\GMMK_modhelper_create_struct.gml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-22T20:24:28.444Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +88,7 @@
               "RelativeDocumentMoniker": "GMMK\\src\\Patcher.cs",
               "ToolTip": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\GMMK\\src\\Patcher.cs",
               "RelativeToolTip": "GMMK\\src\\Patcher.cs",
-              "ViewState": "AQIAAI4DAAAAAAAAAAAkwJMDAABOAAAA",
+              "ViewState": "AQIAAN4BAAAAAAAAAAD4v/YBAABVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-13T21:13:26.369Z",
               "EditorCaption": ""

@@ -1,3 +1,6 @@
 [submodule "UndertaleModTool"]
 	path = UndertaleModTool
 	url = https://github.com/XDOneDude/UndertaleModToolCE
+[submodule "UndertaleModToolCE"]
+	path = UndertaleModToolCE
+	url = https://github.com/XDOneDude/UndertaleModToolCE

@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj": {
-                "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj"
+              "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj": {
+                "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj"
               }
             }
           }
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj": {
+    "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj",
+        "projectUniqueName": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj",
         "projectName": "UndertaleModLib",
-        "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\UndertaleModLib.csproj",
+        "projectPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\UndertaleModLib.csproj",
         "packagesPath": "C:\\Users\\rando\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModTool\\UndertaleModLib\\obj\\",
+        "outputPath": "C:\\Users\\rando\\GMMK_CSharpTemp\\GMMK_CSharpTemp\\UndertaleModToolCE\\UndertaleModLib\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\rando\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -119,7 +119,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.8.1, )"
+              "version": "[6.9.1, )"
             },
             "Magick.NET-Q8-AnyCPU": {
               "target": "Package",

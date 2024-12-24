@@ -979,7 +979,20 @@ global.GMMK_all_mod_paths = {StringListToGMLString(modDirs)}".Replace("\\", "\\\
                     }
                 }
             });
+            handlers.Add("globalscripts", (code, file) =>
+            {
 
+                var functionName = Path.GetFileNameWithoutExtension(file);
+
+                MatchCollection matchList = Regex.Matches(code, @"(?<=argument)\d+");
+                ushort argCount;
+                if (matchList.Count > 0)
+                    argCount = (ushort)(matchList.Cast<Match>().Select(match => ushort.Parse(match.Value)).ToList().Max() + 1);
+                else
+                    argCount = 0;
+                Console.WriteLine("Creating new global scripts " + functionName + " with argument count " + argCount.ToString());
+                data.CreateGlobalScript(functionName, code, argCount, out UndertaleCodeLocals locals);
+            });
             return handlers;
         }
 
