@@ -26,9 +26,8 @@ namespace GMMK
 
         public static UndertaleData data;
 
-        public static string TEMP_HARDCODED_EXE_DIRECTORY = @"C:\Program Files (x86)\Steam\steamapps\common\Will You Snail\Will You Snail.exe";
-        public static string TEMP_HARDCODED_OUT_DATA_DIRECTORY = @"C:\Program Files (x86)\Steam\steamapps\common\Will You Snail\cache.win";
-
+        public static string exePath;
+        public static string dataCachePath;
         public static string gmmkDir;
         public static string modsPath;
         public static string baseDir;
@@ -51,6 +50,8 @@ namespace GMMK
             baseDir = Path.GetDirectoryName(gmmkDir);
             modDirs = Directory.GetDirectories(modsPath);
             gmlCodeDir = Path.Combine(patcherDir, "gmlCode");
+            dataCachePath = Path.Combine(patcherDir, "../../GMMK_CACHE.win");
+            exePath = Path.Combine(baseDir, $"{moddingData.GeneralInfo.FileName.Content}.exe");
 
             data = moddingData;
             blankData = UndertaleData.CreateNew();
@@ -77,7 +78,9 @@ namespace GMMK
 
                 data.FinalizeHooks();
 
-                FileStream stream = File.OpenWrite(TEMP_HARDCODED_OUT_DATA_DIRECTORY);
+                if (File.Exists(dataCachePath)) File.Delete(dataCachePath);
+
+                FileStream stream = File.OpenWrite(dataCachePath);
                 UndertaleIO.Write(stream, data);
                 stream.Dispose();
             } else
@@ -332,142 +335,143 @@ namespace GMMK
 
 
                                                 List<CodeData> codeDatas = new List<CodeData>();
+                                                if(objData.code != null) { 
                                                 Dictionary<string, string> codeEvents = objData.code.ToObject<Dictionary<string, string>>();
 
-                                                foreach (string codeName in codeEvents.Keys.ToList())
-                                                {
-                                                    var codeFileName = codeEvents[codeName];
-                                                    string codePath = FindFileInOneOfTheseDirectories(
-                                                        new string[]{
+                                                    foreach (string codeName in codeEvents.Keys.ToList())
+                                                    {
+                                                        var codeFileName = codeEvents[codeName];
+                                                        string codePath = FindFileInOneOfTheseDirectories(
+                                                            new string[]{
                                                     modFolderPath
-                                                        },
-                                                        codeFileName
-                                                    );
+                                                            },
+                                                            codeFileName
+                                                        );
 
 
-                                                    string codeFContents = File.ReadAllText(codePath);
-                                                    EventType type = EventType.Create;
-                                                    uint subtype = 0;
-                                                    var validEventNames = Databases.EventNames.Keys.ToList();
+                                                        string codeFContents = File.ReadAllText(codePath);
+                                                        EventType type = EventType.Create;
+                                                        uint subtype = 0;
+                                                        var validEventNames = Databases.EventNames.Keys.ToList();
 
-                                                    UndertaleCode newCode = new UndertaleCode(); //Temporary placeholder since it's not nullable
-                                                    if (validEventNames.Contains(codeName.Trim(), StringComparer.OrdinalIgnoreCase))
-                                                    {
-                                                        bool hasFound = false;
-                                                        foreach (string eventName in validEventNames)
+                                                        UndertaleCode newCode = new UndertaleCode(); //Temporary placeholder since it's not nullable
+                                                        if (validEventNames.Contains(codeName.Trim(), StringComparer.OrdinalIgnoreCase))
                                                         {
-                                                            if (eventName.ToLower() == codeName.ToLower())
+                                                            bool hasFound = false;
+                                                            foreach (string eventName in validEventNames)
                                                             {
-                                                                var typesData = Databases.EventNames[eventName];
-                                                                type = typesData.Item1;
-                                                                subtype = typesData.Item2;
-                                                                hasFound = true;
-                                                                break;
+                                                                if (eventName.ToLower() == codeName.ToLower())
+                                                                {
+                                                                    var typesData = Databases.EventNames[eventName];
+                                                                    type = typesData.Item1;
+                                                                    subtype = typesData.Item2;
+                                                                    hasFound = true;
+                                                                    break;
+                                                                }
                                                             }
-                                                        }
 
-                                                        if (!hasFound)
-                                                        {
-                                                            throw new Exception("The code name \"" + codeName + "\" was invalid, even though it was found in the EventNames database. THIS SHOULD NOT HAPPEN! Please report this bug!");
-                                                        }
+                                                            if (!hasFound)
+                                                            {
+                                                                throw new Exception("The code name \"" + codeName + "\" was invalid, even though it was found in the EventNames database. THIS SHOULD NOT HAPPEN! Please report this bug!");
+                                                            }
 
-                                                        newCode = newGameObject.EventHandlerFor(type, subtype, data.Strings, data.Code, data.CodeLocals);
-
-                                                        newCode.ReplaceGML(codeFContents, data);
-                                                    }
-                                                    else if (codeName.ToLower().StartsWith("collision"))
-                                                    {
-                                                        List<string> splitUnderscores = codeName.Replace(" ", "_").Split("_").ToList();
-                                                        splitUnderscores.RemoveAt(0);
-                                                        string colliderName = string.Join("_", splitUnderscores);
-                                                        UndertaleGameObject collidingObject = data.GameObjects.ByName(colliderName);
-                                                        if (collidingObject != null)
-                                                        {
-                                                            newCode = newGameObject.EventHandlerFor(EventType.Collision, (uint)data.GameObjects.IndexOf(collidingObject), data.Strings, data.Code, data.CodeLocals);
+                                                            newCode = newGameObject.EventHandlerFor(type, subtype, data.Strings, data.Code, data.CodeLocals);
 
                                                             newCode.ReplaceGML(codeFContents, data);
                                                         }
+                                                        else if (codeName.ToLower().StartsWith("collision"))
+                                                        {
+                                                            List<string> splitUnderscores = codeName.Replace(" ", "_").Split("_").ToList();
+                                                            splitUnderscores.RemoveAt(0);
+                                                            string colliderName = string.Join("_", splitUnderscores);
+                                                            UndertaleGameObject collidingObject = data.GameObjects.ByName(colliderName);
+                                                            if (collidingObject != null)
+                                                            {
+                                                                newCode = newGameObject.EventHandlerFor(EventType.Collision, (uint)data.GameObjects.IndexOf(collidingObject), data.Strings, data.Code, data.CodeLocals);
+
+                                                                newCode.ReplaceGML(codeFContents, data);
+                                                            }
+                                                            else
+                                                            {
+                                                                throw new Exception($"Tried to create a collision event between objects \"{objData.Name}\" and \"{colliderName}\",\nbut {colliderName} does not exist as an object!");
+                                                            }
+                                                        }
                                                         else
                                                         {
-                                                            throw new Exception($"Tried to create a collision event between objects \"{objData.Name}\" and \"{colliderName}\",\nbut {colliderName} does not exist as an object!");
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        switch (codeName.ToLower())
-                                                        {
+                                                            switch (codeName.ToLower())
+                                                            {
 
-                                                            case "wired":
-                                                            case "powered":
-                                                                MatchCollection matchList = Regex.Matches(codeFContents, @"(?<=argument)\d+");
-                                                                ushort argCount;
-                                                                if (matchList.Count > 0)
-                                                                    argCount = (ushort)(matchList.Cast<Match>().Select(match => ushort.Parse(match.Value)).ToList().Max() + 1);
-                                                                else
-                                                                    argCount = 0;
-                                                                data.CreateFunction($"obj_{objName}_Wired_0", codeFContents, argCount);
-                                                                break;
-
-                                                            default:
-                                                                string codeType = codeName.Split("_")[0];
-                                                                string codeSubtype = "";
-                                                                if (codeName.Split("_").Length > 1)
-                                                                {
-                                                                    codeSubtype = codeName.Split("_")[1];
-                                                                }
-
-                                                                if (codePath != "")
-                                                                {
-                                                                    type = (EventType)Enum.Parse(typeof(EventType), codeType);
-
-                                                                    if (codeSubtype == null) subtype = 0;
+                                                                case "wired":
+                                                                case "powered":
+                                                                    MatchCollection matchList = Regex.Matches(codeFContents, @"(?<=argument)\d+");
+                                                                    ushort argCount;
+                                                                    if (matchList.Count > 0)
+                                                                        argCount = (ushort)(matchList.Cast<Match>().Select(match => ushort.Parse(match.Value)).ToList().Max() + 1);
                                                                     else
+                                                                        argCount = 0;
+                                                                    data.CreateFunction($"obj_{objName}_Wired_0", codeFContents, argCount);
+                                                                    break;
+
+                                                                default:
+                                                                    string codeType = codeName.Split("_")[0];
+                                                                    string codeSubtype = "";
+                                                                    if (codeName.Split("_").Length > 1)
                                                                     {
-                                                                        try
-                                                                        {
-                                                                            subtype = (uint)Enum.Parse(FindType("UndertaleModLib.Models.EventSubtype" + codeType), codeSubtype);
-                                                                        }
-                                                                        catch
+                                                                        codeSubtype = codeName.Split("_")[1];
+                                                                    }
+
+                                                                    if (codePath != "")
+                                                                    {
+                                                                        type = (EventType)Enum.Parse(typeof(EventType), codeType);
+
+                                                                        if (codeSubtype == null) subtype = 0;
+                                                                        else
                                                                         {
                                                                             try
                                                                             {
-                                                                                subtype = uint.Parse(codeSubtype);
+                                                                                subtype = (uint)Enum.Parse(FindType("UndertaleModLib.Models.EventSubtype" + codeType), codeSubtype);
                                                                             }
                                                                             catch
                                                                             {
-                                                                                throw new Exception("The code name \"" + codeName + "\" was invalid.");
+                                                                                try
+                                                                                {
+                                                                                    subtype = uint.Parse(codeSubtype);
+                                                                                }
+                                                                                catch
+                                                                                {
+                                                                                    throw new Exception("The code name \"" + codeName + "\" was invalid.");
+                                                                                }
                                                                             }
                                                                         }
+
+
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        Console.WriteLine("Could not find code file " + codeFileName + " for object " + objName);
                                                                     }
 
+                                                                    newCode = newGameObject.EventHandlerFor(type, subtype, data.Strings, data.Code, data.CodeLocals);
 
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    Console.WriteLine("Could not find code file " + codeFileName + " for object " + objName);
-                                                                }
-
-                                                                newCode = newGameObject.EventHandlerFor(type, subtype, data.Strings, data.Code, data.CodeLocals);
-
-                                                                newCode.ReplaceGML(codeFContents, data);
-                                                                break;
+                                                                    newCode.ReplaceGML(codeFContents, data);
+                                                                    break;
 
 
 
+                                                            }
                                                         }
+
+
+
+                                                        CodeData code = new CodeData
+                                                        {
+                                                            path = codePath,
+                                                            undertaleCode = newCode
+                                                        };
+                                                        codeDatas.Add(code);
+
                                                     }
-
-
-
-                                                    CodeData code = new CodeData
-                                                    {
-                                                        path = codePath,
-                                                        undertaleCode = newCode
-                                                    };
-                                                    codeDatas.Add(code);
-
-
 
                                                 }
 
@@ -1362,14 +1366,14 @@ global.GMMK_all_mod_paths = {StringListToGMLString(modDirs)}".Replace("\\", "\\\
         {
             ProcessStartInfo processStartInfo = new()
             {
-                FileName = TEMP_HARDCODED_EXE_DIRECTORY,
-                WorkingDirectory = Directory.GetParent(TEMP_HARDCODED_EXE_DIRECTORY).FullName
+                FileName = exePath,
+                WorkingDirectory = Directory.GetParent(exePath).FullName
             };
 
             processStartInfo.ArgumentList.Add("-game");
 
             if (loadmods)
-                processStartInfo.ArgumentList.Add(TEMP_HARDCODED_OUT_DATA_DIRECTORY);
+                processStartInfo.ArgumentList.Add(dataCachePath);
             else
                 processStartInfo.ArgumentList.Add("data.win");
 
